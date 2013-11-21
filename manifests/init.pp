@@ -15,9 +15,29 @@ class rhn (
   $up2date_file_owner   = 'root',
   $up2date_file_group   = 'root',
   $up2date_file_mode    = '0600',
-  $up2date_server_url   = 'http://xmlrpc.rhn.redhat.com/XMLRPC',
+  $up2date_server_url   = 'https://xmlrpc.rhn.redhat.com/XMLRPC',
   $up2date_ssl_ca_cert  = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT',
 ) {
+
+  case $::osfamily {
+    'RedHat': { }
+    default: {
+      fail("rhn is supported on osfamily RedHat. Your osfamily identified as ${::osfamily}.")
+    }
+  }
+
+  $rhnsd_service_enable_type = type($rhnsd_service_enable)
+  if $rhnsd_service_enable_type == 'string' {
+    $rhnsd_service_enabled = str2bool($rhnsd_service_enable)
+  } else {
+    $rhnsd_service_enabled = $rhnsd_service_enable
+  }
+
+  validate_re($rhnsd_service_ensure, '^(running|stopped)$', 'rhn::rhnsd_service_ensure must be set to either running or stopped')
+  validate_bool($rhnsd_service_enabled)
+  validate_absolute_path($rhnsd_file_path)
+  validate_absolute_path($up2date_file_path)
+  validate_absolute_path($up2date_ssl_ca_cert)
 
   package { 'rhn_packages':
     ensure => 'installed',
@@ -47,7 +67,7 @@ class rhn (
 
   service { 'rhnsd_service':
     ensure  => $rhnsd_service_ensure,
-    enable  => $rhnsd_service_enable,
+    enable  => $rhnsd_service_enabled,
     require => Package['rhn_packages'],
   }
 }
