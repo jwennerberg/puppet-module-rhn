@@ -38,6 +38,7 @@ describe 'rhn' do
       should contain_service('rhnsd_service').with({
         'ensure' => 'running',
         'enable' => 'true',
+        'name'   => 'rhnsd',
       })
     }
   end
@@ -147,6 +148,7 @@ describe 'rhn' do
       should contain_service('rhnsd_service').with({
         'ensure' => 'running',
         'enable' => 'false',
+        'name'   => 'rhnsd',
       })
     }
   end
@@ -166,6 +168,27 @@ describe 'rhn' do
       should contain_service('rhnsd_service').with({
         'ensure' => 'stopped',
         'enable' => 'true',
+        'name'   => 'rhnsd',
+      })
+    }
+  end
+
+  context 'with specifying rhnsd_service_name' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+
+    let :params do
+      {
+        :rhnsd_service_name => 'rhnsd_c',
+      }
+    end
+
+    it {
+      should contain_service('rhnsd_service').with({
+        'ensure' => 'running',
+        'enable' => 'true',
+        'name'   => 'rhnsd_c',
       })
     }
   end

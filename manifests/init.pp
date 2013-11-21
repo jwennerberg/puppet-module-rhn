@@ -11,6 +11,7 @@ class rhn (
   $rhnsd_interval       = '240',
   $rhnsd_service_ensure = 'running',
   $rhnsd_service_enable = true,
+  $rhnsd_service_name   = 'rhnsd',
   $up2date_file_path    = '/etc/sysconfig/rhn/up2date',
   $up2date_file_owner   = 'root',
   $up2date_file_group   = 'root',
@@ -68,6 +69,7 @@ class rhn (
   service { 'rhnsd_service':
     ensure  => $rhnsd_service_ensure,
     enable  => $rhnsd_service_enabled,
+    name    => $rhnsd_service_name,
     require => Package['rhn_packages'],
   }
 }
