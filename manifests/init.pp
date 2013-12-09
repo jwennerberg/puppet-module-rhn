@@ -19,8 +19,8 @@ class rhn (
   $up2date_ssl_ca_cert  = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT',
 ) {
 
-  case $::lsbdistid {
-    /RedHat/: {
+  case $::operatingsystem {
+    'RedHat': {
       $rhnsd_service_enable_type = type($rhnsd_service_enable)
       if $rhnsd_service_enable_type == 'string' {
         $rhnsd_service_enabled = str2bool($rhnsd_service_enable)
@@ -67,7 +67,7 @@ class rhn (
       }
     }
     default: {
-      notice("rhn is supported on osfamily RedHat and lsbdistid RedHat. Your osfamily identified as ${::osfamily} and your lsbdistid is identified as ${::lsbdistid}.")
+      notice("rhn is supported on operatingsystem: RedHat. Your operatingsystem identified as ${::operatingsystem}.")
     }
   }
 
