@@ -1,9 +1,9 @@
 require 'spec_helper'
 describe 'rhn' do
 
-  context 'with default options on osfamily RedHat' do
+  context 'with default options on operatingsystem RedHat' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      { :operatingsystem => 'RedHat' }
     end
 
     it {
@@ -45,7 +45,7 @@ describe 'rhn' do
 
   context 'with specifying up2date_server_url' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      { :operatingsystem => 'RedHat' }
     end
 
     let :params do
@@ -65,7 +65,7 @@ describe 'rhn' do
 
   context 'with specifying up2date_ssl_ca_cert' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      { :operatingsystem => 'RedHat' }
     end
 
     let :params do
@@ -85,7 +85,7 @@ describe 'rhn' do
 
   context 'with specifying up2date file parameters' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      { :operatingsystem => 'RedHat' }
     end
 
     let :params do
@@ -110,7 +110,7 @@ describe 'rhn' do
 
   context 'with specifying rhnsd file parameters' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      { :operatingsystem => 'RedHat' }
     end
 
     let :params do
@@ -135,7 +135,7 @@ describe 'rhn' do
 
   context 'with rhnsd_service_enable set to false' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      { :operatingsystem => 'RedHat' }
     end
 
     let :params do
@@ -155,7 +155,7 @@ describe 'rhn' do
 
   context 'with rhnsd_service_ensure set to stopped' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      { :operatingsystem => 'RedHat' }
     end
 
     let :params do
@@ -175,7 +175,7 @@ describe 'rhn' do
 
   context 'with specifying rhnsd_service_name' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      { :operatingsystem => 'RedHat' }
     end
 
     let :params do
@@ -195,7 +195,7 @@ describe 'rhn' do
 
   context 'with specifying packages' do
     let :facts do
-      { :osfamily => 'RedHat' }
+      { :operatingsystem => 'RedHat' }
     end
 
     let :params do
@@ -208,16 +208,5 @@ describe 'rhn' do
         'name'   => ['rhnsd','rhn-client-tools','osad'],
       })
     }
-  end
-  context 'on unsupported osfamily' do
-    let :facts do
-      { :osfamily => 'Suse' }
-    end
-
-    it 'should fail' do
-      expect {
-        should include_class('rhn')
-      }.to raise_error(Puppet::Error,/rhn is supported on osfamily RedHat./)
-    end
   end
 end
