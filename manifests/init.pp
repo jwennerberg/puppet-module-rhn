@@ -35,9 +35,8 @@ class rhn (
       validate_absolute_path($up2date_file_path)
       validate_absolute_path($up2date_ssl_ca_cert)
 
-      package { 'rhn_packages':
+      package { $packages:
         ensure => 'installed',
-        name   => $packages,
       }
 
       file { 'up2date_file':
@@ -47,7 +46,7 @@ class rhn (
         group   => $up2date_file_group,
         mode    => $up2date_file_mode,
         content => template('rhn/up2date.erb'),
-        require => Package['rhn_packages'],
+        require => Package[$packages],
       }
 
       file { 'rhnsd_file':
@@ -57,7 +56,7 @@ class rhn (
         group   => $rhnsd_file_group,
         mode    => $rhnsd_file_mode,
         content => template('rhn/rhnsd.erb'),
-        require => Package['rhn_packages'],
+        require => Package[$packages],
         notify  => Service['rhnsd_service'],
       }
 
@@ -65,7 +64,7 @@ class rhn (
         ensure  => $rhnsd_service_ensure,
         enable  => $rhnsd_service_enabled,
         name    => $rhnsd_service_name,
-        require => Package['rhn_packages'],
+        require => Package[$packages],
       }
     }
     default: {

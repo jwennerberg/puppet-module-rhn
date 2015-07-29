@@ -6,13 +6,8 @@ describe 'rhn' do
       { :operatingsystem => 'RedHat' }
     end
 
-    it {
-      should include_class('rhn')
-      should contain_package('rhn_packages').with({
-        'ensure' => 'installed',
-        'name'   => ['rhnsd','rhn-client-tools'],
-      })
-    }
+    it { should contain_package('rhnsd').with_ensure('installed') }
+    it { should contain_package('rhn-client-tools').with_ensure('installed') }
     it {
       should contain_file('up2date_file').with({
         'ensure' => 'file',
@@ -202,11 +197,8 @@ describe 'rhn' do
       { :packages => ['rhnsd','rhn-client-tools','osad'] }
     end
 
-    it {
-      should contain_package('rhn_packages').with({
-        'ensure' => 'installed',
-        'name'   => ['rhnsd','rhn-client-tools','osad'],
-      })
-    }
+    it { should contain_package('rhnsd').with_ensure('installed') }
+    it { should contain_package('rhn-client-tools').with_ensure('installed') }
+    it { should contain_package('osad').with_ensure('installed') }
   end
 end
