@@ -1,7 +1,7 @@
 # puppet-module-rhn
 ===
 
-[![Build Status](https://travis-ci.org/Ericsson/puppet-module-rhn.png?branch=master)](https://travis-ci.org/Ericsson/puppet-module-rhn)
+[![Build Status](https://travis-ci.org/jwennerberg/puppet-module-rhn.png?branch=master)](https://travis-ci.org/jwennerberg/puppet-module-rhn)
 
 Manages a client's Red Hat Network connection
 
