@@ -22,7 +22,7 @@ class rhn (
 
   case $::operatingsystem {
     'RedHat': {
-      $rhnsd_service_enable_type = type($rhnsd_service_enable)
+      $rhnsd_service_enable_type = type3x($rhnsd_service_enable)
       if $rhnsd_service_enable_type == 'string' {
         $rhnsd_service_enabled = str2bool($rhnsd_service_enable)
       } else {
