@@ -9,7 +9,7 @@ Manages a client's Red Hat Network connection
 
 # Compatibility
 ---------------
-This module is built for use with Puppet v3 on osfamily RedHat.
+This module is built for use with Puppet v3 (or greater) on osfamily RedHat.
 
 ===
 
