@@ -1,9 +1,9 @@
 require 'spec_helper'
 describe 'rhn' do
 
-  context 'with default options on operatingsystem RedHat' do
+  context 'with default options on osfamily RedHat' do
     let :facts do
-      { :operatingsystem => 'RedHat' }
+      { :osfamily => 'RedHat' }
     end
 
     it { should contain_package('rhnsd').with_ensure('installed') }
@@ -40,7 +40,7 @@ describe 'rhn' do
 
   context 'with specifying up2date_server_url' do
     let :facts do
-      { :operatingsystem => 'RedHat' }
+      { :osfamily => 'RedHat' }
     end
 
     let :params do
@@ -105,7 +105,7 @@ describe 'rhn' do
 
   context 'with specifying rhnsd file parameters' do
     let :facts do
-      { :operatingsystem => 'RedHat' }
+      { :osfamily => 'RedHat' }
     end
 
     let :params do
@@ -130,7 +130,7 @@ describe 'rhn' do
 
   context 'with rhnsd_service_enable set to false' do
     let :facts do
-      { :operatingsystem => 'RedHat' }
+      { :osfamily => 'RedHat' }
     end
 
     let :params do
@@ -150,7 +150,7 @@ describe 'rhn' do
 
   context 'with rhnsd_service_ensure set to stopped' do
     let :facts do
-      { :operatingsystem => 'RedHat' }
+      { :osfamily => 'RedHat' }
     end
 
     let :params do
@@ -170,7 +170,7 @@ describe 'rhn' do
 
   context 'with specifying rhnsd_service_name' do
     let :facts do
-      { :operatingsystem => 'RedHat' }
+      { :osfamily => 'RedHat' }
     end
 
     let :params do
@@ -190,7 +190,7 @@ describe 'rhn' do
 
   context 'with specifying packages' do
     let :facts do
-      { :operatingsystem => 'RedHat' }
+      { :osfamily => 'RedHat' }
     end
 
     let :params do

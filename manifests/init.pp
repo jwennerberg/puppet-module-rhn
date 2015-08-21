@@ -20,7 +20,7 @@ class rhn (
   $up2date_ssl_ca_cert  = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT',
 ) {
 
-  case $::operatingsystem {
+  case $::osfamily {
     'RedHat': {
       $rhnsd_service_enable_type = type3x($rhnsd_service_enable)
       if $rhnsd_service_enable_type == 'string' {
@@ -68,7 +68,7 @@ class rhn (
       }
     }
     default: {
-      notice("rhn is supported on operatingsystem: RedHat. Your operatingsystem identified as ${::operatingsystem}.")
+      notice("rhn is supported on osfamily RedHat. Your osfamily identified as ${::osfamily}.")
     }
   }
 }

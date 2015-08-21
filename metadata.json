@@ -20,7 +20,7 @@
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem": "RedHat"
+      "osfamily": "RedHat"
     }
   ],
   "dependencies": [
