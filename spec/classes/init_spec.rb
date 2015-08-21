@@ -9,18 +9,6 @@ describe 'rhn' do
     it { should contain_package('rhnsd').with_ensure('installed') }
     it { should contain_package('rhn-client-tools').with_ensure('installed') }
     it {
-      should contain_file('up2date_file').with({
-        'ensure' => 'file',
-        'path'   => '/etc/sysconfig/rhn/up2date',
-        'owner'  => 'root',
-        'group'  => 'root',
-        'mode'   => '0600',
-      })
-    }
-    it { should contain_file('up2date_file').with_content(/^serverURL=https:\/\/xmlrpc.rhn.redhat.com\/XMLRPC$/) }
-    it { should contain_file('up2date_file').with_content(/^sslCACert=\/usr\/share\/rhn\/RHN-ORG-TRUSTED-SSL-CERT$/) }
-
-    it {
       should contain_file('rhnsd_file').with({
         'ensure' => 'file',
         'path'   => '/etc/sysconfig/rhn/rhnsd',
@@ -38,70 +26,89 @@ describe 'rhn' do
     }
   end
 
-  context 'with specifying up2date_server_url' do
+  context 'with specifying up2date_settings' do
     let :facts do
       { :osfamily => 'RedHat' }
     end
 
     let :params do
-      { :up2date_server_url => 'https://satellite.example.com/XMLRPC' }
-    end
-
-    it {
-      should contain_file('up2date_file').with({
-        'ensure' => 'file',
-        'path'   => '/etc/sysconfig/rhn/up2date',
-        'owner'  => 'root',
-        'group'  => 'root',
-        'mode'   => '0600',
-      }).with_content(/^serverURL=https:\/\/satellite.example.com\/XMLRPC$/)
-    }
-  end
-
-  context 'with specifying up2date_ssl_ca_cert' do
-    let :facts do
-      { :operatingsystem => 'RedHat' }
-    end
-
-    let :params do
-      { :up2date_ssl_ca_cert => '/usr/share/rhn/CUSTOM-SSL-CERT' }
-    end
-
-    it {
-      should contain_file('up2date_file').with({
-        'ensure' => 'file',
-        'path'   => '/etc/sysconfig/rhn/up2date',
-        'owner'  => 'root',
-        'group'  => 'root',
-        'mode'   => '0600',
-      }).with_content(/^sslCACert=\/usr\/share\/rhn\/CUSTOM-SSL-CERT$/)
-    }
-  end
-
-  context 'with specifying up2date file parameters' do
-    let :facts do
-      { :operatingsystem => 'RedHat' }
-    end
-
-    let :params do
-      {
-        :up2date_file_owner => 'root',
-        :up2date_file_group => 'rhn',
-        :up2date_file_mode  => '0640',
-        :up2date_file_path  => '/etc/sysconfig/rhn/up2date_c',
+      { :up2date_settings => {
+          "serverURL" => "https://satellite.example.com/XMLRPC",
+          "sslCACert" => "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT",
+        }
       }
     end
 
     it {
-      should contain_file('up2date_file').with({
-        'ensure' => 'file',
-        'path'   => '/etc/sysconfig/rhn/up2date_c',
-        'owner'  => 'root',
-        'group'  => 'rhn',
-        'mode'   => '0640',
+      should contain_ini_setting('[] serverURL').with({
+        'section' => '',
+        'setting' => 'serverURL',
+        'value'   => 'https://satellite.example.com/XMLRPC',
+        'path'    => '/etc/sysconfig/rhn/up2date',
+      })
+    }
+    it {
+      should contain_ini_setting('[] sslCACert').with({
+        'section' => '',
+        'setting' => 'sslCACert',
+        'value'   => '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT',
+        'path'    => '/etc/sysconfig/rhn/up2date',
       })
     }
   end
+#        'ensure' => 'file',
+#        'path'   => '/etc/sysconfig/rhn/up2date',
+#        'owner'  => 'root',
+#        'group'  => 'root',
+#        'mode'   => '0600',
+#      }).with_content(/^serverURL=https:\/\/satellite.example.com\/XMLRPC$/)
+#    }
+#  end
+#
+#  context 'with specifying up2date_ssl_ca_cert' do
+#    let :facts do
+#      { :osfamily => 'RedHat' }
+#    end
+#
+#    let :params do
+#      { :up2date_ssl_ca_cert => '/usr/share/rhn/CUSTOM-SSL-CERT' }
+#    end
+#
+#    it {
+#      should contain_file('up2date_file').with({
+#        'ensure' => 'file',
+#        'path'   => '/etc/sysconfig/rhn/up2date',
+#        'owner'  => 'root',
+#        'group'  => 'root',
+#        'mode'   => '0600',
+#      }).with_content(/^sslCACert=\/usr\/share\/rhn\/CUSTOM-SSL-CERT$/)
+#    }
+#  end
+#
+#  context 'with specifying up2date file parameters' do
+#    let :facts do
+#      { :osfamily => 'RedHat' }
+#    end
+#
+#    let :params do
+#      {
+#        :up2date_file_owner => 'root',
+#        :up2date_file_group => 'rhn',
+#        :up2date_file_mode  => '0640',
+#        :up2date_file_path  => '/etc/sysconfig/rhn/up2date_c',
+#      }
+#    end
+#
+#    it {
+#      should contain_file('up2date_file').with({
+#        'ensure' => 'file',
+#        'path'   => '/etc/sysconfig/rhn/up2date_c',
+#        'owner'  => 'root',
+#        'group'  => 'rhn',
+#        'mode'   => '0640',
+#      })
+#    }
+#  end
 
   context 'with specifying rhnsd file parameters' do
     let :facts do
@@ -200,5 +207,57 @@ describe 'rhn' do
     it { should contain_package('rhnsd').with_ensure('installed') }
     it { should contain_package('rhn-client-tools').with_ensure('installed') }
     it { should contain_package('osad').with_ensure('installed') }
+  end
+
+  context 'with invalid up2date_settings parameter' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+    let(:params) { { :up2date_settings => ['not','a','hash'] } }
+
+    it 'should fail' do
+      expect {
+        should contain_class('rhn')
+      }.to raise_error(Puppet::Error)
+    end
+  end
+
+  context 'with invalid rhnsd_service_ensure parameter' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+    let(:params) { { :rhnsd_service_ensure => 'present' } }
+
+    it 'should fail' do
+      expect {
+        should contain_class('rhn')
+      }.to raise_error(Puppet::Error)
+    end
+  end
+
+  context 'with invalid rhnsd_file_path parameter' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+    let(:params) { { :rhnsd_file_path => 'not/a/abs/path' } }
+
+    it 'should fail' do
+      expect {
+        should contain_class('rhn')
+      }.to raise_error(Puppet::Error)
+    end
+  end
+
+  context 'with invalid up2date_file_path parameter' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+    let(:params) { { :up2date_file_path => 'not/a/abs/path' } }
+
+    it 'should fail' do
+      expect {
+        should contain_class('rhn')
+      }.to raise_error(Puppet::Error)
+    end
   end
 end

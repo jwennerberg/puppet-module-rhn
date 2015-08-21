@@ -13,11 +13,7 @@ class rhn (
   $rhnsd_service_enable = true,
   $rhnsd_service_name   = 'rhnsd',
   $up2date_file_path    = '/etc/sysconfig/rhn/up2date',
-  $up2date_file_owner   = 'root',
-  $up2date_file_group   = 'root',
-  $up2date_file_mode    = '0600',
-  $up2date_server_url   = 'https://xmlrpc.rhn.redhat.com/XMLRPC',
-  $up2date_ssl_ca_cert  = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT',
+  $up2date_settings     = {},
 ) {
 
   case $::osfamily {
@@ -33,21 +29,14 @@ class rhn (
       validate_bool($rhnsd_service_enabled)
       validate_absolute_path($rhnsd_file_path)
       validate_absolute_path($up2date_file_path)
-      validate_absolute_path($up2date_ssl_ca_cert)
+      validate_hash($up2date_settings)
 
       package { $packages:
         ensure => 'installed',
       }
 
-      file { 'up2date_file':
-        ensure  => 'file',
-        path    => $up2date_file_path,
-        owner   => $up2date_file_owner,
-        group   => $up2date_file_group,
-        mode    => $up2date_file_mode,
-        content => template('rhn/up2date.erb'),
-        require => Package[$packages],
-      }
+      $up2date_defaults = { 'path' => $up2date_file_path }
+      create_ini_settings({ '' => $up2date_settings}, $up2date_defaults)
 
       file { 'rhnsd_file':
         ensure  => 'file',
