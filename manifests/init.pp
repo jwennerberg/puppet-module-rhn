@@ -18,15 +18,14 @@ class rhn (
 
   case $::osfamily {
     'RedHat': {
-      $rhnsd_service_enable_type = type3x($rhnsd_service_enable)
-      if $rhnsd_service_enable_type == 'string' {
-        $rhnsd_service_enabled = str2bool($rhnsd_service_enable)
+      if is_string($rhnsd_service_enable) {
+        $rhnsd_service_enable_real = str2bool($rhnsd_service_enable)
       } else {
-        $rhnsd_service_enabled = $rhnsd_service_enable
+        $rhnsd_service_enable_real = $rhnsd_service_enable
       }
+      validate_bool($rhnsd_service_enable_real)
 
       validate_re($rhnsd_service_ensure, '^(running|stopped)$', 'rhn::rhnsd_service_ensure must be set to either running or stopped')
-      validate_bool($rhnsd_service_enabled)
       validate_absolute_path($rhnsd_file_path)
       validate_absolute_path($up2date_file_path)
       validate_hash($up2date_settings)
@@ -51,7 +50,7 @@ class rhn (
 
       service { 'rhnsd_service':
         ensure  => $rhnsd_service_ensure,
-        enable  => $rhnsd_service_enabled,
+        enable  => $rhnsd_service_enable_real,
         name    => $rhnsd_service_name,
         require => Package[$packages],
       }
