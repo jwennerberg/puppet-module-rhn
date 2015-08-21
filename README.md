@@ -59,6 +59,11 @@ Hash with up2date sysconfig settings
 
 - *Default*: {}
 
+### `up2date_settings_hiera_merge`
+Boolean to control merges of all found instances of rhn::up2date_settings in Hiera.
+
+- *Default*: true
+
 ## Hiera example
 ~~~puppet
 rhn::rhnsd_interval: 300
