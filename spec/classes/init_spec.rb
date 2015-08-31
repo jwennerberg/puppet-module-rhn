@@ -56,59 +56,6 @@ describe 'rhn' do
       })
     }
   end
-#        'ensure' => 'file',
-#        'path'   => '/etc/sysconfig/rhn/up2date',
-#        'owner'  => 'root',
-#        'group'  => 'root',
-#        'mode'   => '0600',
-#      }).with_content(/^serverURL=https:\/\/satellite.example.com\/XMLRPC$/)
-#    }
-#  end
-#
-#  context 'with specifying up2date_ssl_ca_cert' do
-#    let :facts do
-#      { :osfamily => 'RedHat' }
-#    end
-#
-#    let :params do
-#      { :up2date_ssl_ca_cert => '/usr/share/rhn/CUSTOM-SSL-CERT' }
-#    end
-#
-#    it {
-#      should contain_file('up2date_file').with({
-#        'ensure' => 'file',
-#        'path'   => '/etc/sysconfig/rhn/up2date',
-#        'owner'  => 'root',
-#        'group'  => 'root',
-#        'mode'   => '0600',
-#      }).with_content(/^sslCACert=\/usr\/share\/rhn\/CUSTOM-SSL-CERT$/)
-#    }
-#  end
-#
-#  context 'with specifying up2date file parameters' do
-#    let :facts do
-#      { :osfamily => 'RedHat' }
-#    end
-#
-#    let :params do
-#      {
-#        :up2date_file_owner => 'root',
-#        :up2date_file_group => 'rhn',
-#        :up2date_file_mode  => '0640',
-#        :up2date_file_path  => '/etc/sysconfig/rhn/up2date_c',
-#      }
-#    end
-#
-#    it {
-#      should contain_file('up2date_file').with({
-#        'ensure' => 'file',
-#        'path'   => '/etc/sysconfig/rhn/up2date_c',
-#        'owner'  => 'root',
-#        'group'  => 'rhn',
-#        'mode'   => '0640',
-#      })
-#    }
-#  end
 
   context 'with specifying rhnsd file parameters' do
     let :facts do
@@ -214,6 +161,19 @@ describe 'rhn' do
       { :osfamily => 'RedHat' }
     end
     let(:params) { { :up2date_settings => ['not','a','hash'] } }
+
+    it 'should fail' do
+      expect {
+        should contain_class('rhn')
+      }.to raise_error(Puppet::Error)
+    end
+  end
+
+  context 'with invalid up2date_settings_hiera_merge parameter' do
+    let :facts do
+      { :osfamily => 'RedHat' }
+    end
+    let(:params) { { :up2date_settings_hiera_merge => ['not','a','bool'] } }
 
     it 'should fail' do
       expect {
