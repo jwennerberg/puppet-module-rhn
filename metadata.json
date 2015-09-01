@@ -1,21 +1,21 @@
 {
   "name": "jwennerberg-rhn",
-  "version": "0.2.0",
-  "author": "jwenneberg",
+  "version": "1.0.0",
+  "author": "jwennerberg",
   "summary": "Manage RHN connections",
   "license": "Apache-2.0",
   "source": "git://github.com/jwennerberg/puppet-module-rhn.git",
   "project_page": "https://github.com/jwennerberg/puppet-module-rhn",
-  "issues_url": "https://github.com/jwennerberg/puppet-module-ntp/issues",
+  "issues_url": "https://github.com/jwennerberg/puppet-module-rhn/issues",
   "description": "Manages RHN connections",
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": ">= 3.2.0 < 4.0.0"
+      "version_requirement": ">= 3.2.0"
     },
     {
       "name": "puppet",
-      "version_requirement": ">= 3.0.0 < 4.0.0"
+      "version_requirement": ">= 3.0.0"
     }
   ],
   "operatingsystem_support": [
